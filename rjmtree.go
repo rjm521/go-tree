@@ -40,22 +40,22 @@ func mytree(root, indent string) error {
 	}
 
 	// read all dirs and files in that root directory
-	ds, err := ioutil.ReadDir(root)
+	fileInfos, err := ioutil.ReadDir(root)
 	if err != nil {
 		return errors.Annotatef(err, "could not read dir %s", stat.Name())
 	}
-	// put everything in that fs but not ingore file or ingore directory
-	var fs []string
-	for _, d := range ds {
-		if d.Name()[0] != '.' {
-			fs = append(fs, d.Name())
+	// put everything in that fnames but not ingore file or ingore directory
+	var fnames []string
+	for _, file := range fileInfos {
+		if file.Name()[0] != '.' {
+			fnames = append(fnames, file.Name())
 		}
 	}
 
-	for i, v := range fs {
+	for i, v := range fnames {
 		add := "│  "
 		// last child we print this pattern
-		if i == len(fs)-1 {
+		if i == len(fnames)-1 {
 			// v don't have a little brother any more
 			fmt.Printf(indent + "└──")
 			add = "   "
